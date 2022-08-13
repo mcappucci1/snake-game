@@ -13,18 +13,21 @@ import {
     removeFoodClass
 } from "../utils/SnakeUtils";
 import { GameCells } from "./GameCells";
-import { EndGameBanner } from "./EndGameBanner";
+import { GameBanner } from "./GameBanner";
 import "../css/GameBoard.css";
 
-interface Props {
-    snakeSpeed: Speed;
-}
-
-export const GameBoard = memo(function GameBoardInternal({ snakeSpeed }: Props) {
+export const GameBoard = memo(function GameBoardInternal() {
     const [snake, setSnake] = useState<SnakeCell[]>(SNAKE_START_POSITION);
     const [snakeDirection, setSnakeDirection] = useState<Direction>(Direction.DOWN);
     const [food, setFood] = useState<SnakeCell>();
     const [gameOver, setGameOver] = useState<boolean>(false);
+    const [speed, setSpeed] = useState<Speed>(Speed.MEDIUM);
+
+    const handleChangeSpeed = useCallback((newSpeed: Speed) => {
+        if (newSpeed !== speed) {
+            setSpeed(newSpeed);
+        }
+    }, [speed]);
 
     const isGameOver = () => {
         const head = snake[0];
@@ -54,8 +57,7 @@ export const GameBoard = memo(function GameBoardInternal({ snakeSpeed }: Props) 
         }
         if (isGameOver()) {
             setGameOver(true);
-        }
-        if (didSnakeEat()) {
+        } else if (didSnakeEat()) {
             removeFoodClass(food!);
             createFood();
             movedSnake.push(snake[snake.length-1]);
@@ -120,13 +122,13 @@ export const GameBoard = memo(function GameBoardInternal({ snakeSpeed }: Props) 
     }, [clearBoard]);
 
     useEffect(() => {
-        const intervalKey = setInterval(handleMoveSnake, snakeSpeed);
+        const intervalKey = setInterval(handleMoveSnake, speed);
         document.addEventListener("keydown", handleDirectionChange);
         return () => {
             clearInterval(intervalKey);
             document.removeEventListener("keydown", handleDirectionChange);
         }
-    }, [snakeSpeed, handleMoveSnake]);
+    }, [speed, handleMoveSnake]);
 
     useEffect(() => {
         initializeSnake();
@@ -135,7 +137,7 @@ export const GameBoard = memo(function GameBoardInternal({ snakeSpeed }: Props) 
 
     return (
         <div id="game-board-container">
-            {gameOver && <EndGameBanner handlePlayAgain={handlePlayAgain} />}
+            {gameOver && <GameBanner handlePlayAgain={handlePlayAgain} handleChangeSpeed={handleChangeSpeed} speed={speed}/>}
             <GameCells />
         </div>
     );
