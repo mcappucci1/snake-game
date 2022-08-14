@@ -1,7 +1,5 @@
-import { Speed } from "../utils/SnakeUtils";
 import { GameBoard } from "./GameBoard";
-import { GameSettings } from "./GameSettings";
-import { memo, useCallback, useState } from "react";
+import { memo } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import "../css/App.css";
 

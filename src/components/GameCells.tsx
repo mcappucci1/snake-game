@@ -3,7 +3,6 @@ import { getIdFromCoordinate, NUM_CELLS } from "../utils/SnakeUtils";
 
 export const GameCells = memo(function GameCellsInternal() {
     const board: JSX.Element[] = useMemo(() => {
-        console.log('rebuilding board');
         const boardCells: JSX.Element[][] = [];
         for (let i = 0; i < NUM_CELLS; ++i) {
             boardCells.push([]);

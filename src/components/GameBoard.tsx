@@ -19,8 +19,8 @@ import "../css/GameBoard.css";
 export const GameBoard = memo(function GameBoardInternal() {
     const [snake, setSnake] = useState<SnakeCell[]>(SNAKE_START_POSITION);
     const [snakeDirection, setSnakeDirection] = useState<Direction>(Direction.DOWN);
-    const [food, setFood] = useState<SnakeCell>();
-    const [gameOver, setGameOver] = useState<boolean>(false);
+    const [food, setFood] = useState<SnakeCell>({ x: 0, y: 0});
+    const [gameOver, setGameOver] = useState<boolean>(true);
     const [speed, setSpeed] = useState<Speed>(Speed.MEDIUM);
 
     const handleChangeSpeed = useCallback((newSpeed: Speed) => {
@@ -94,6 +94,7 @@ export const GameBoard = memo(function GameBoardInternal() {
     const initializeSnake = useCallback(() => SNAKE_START_POSITION.forEach((cell) => addSnakeClass(cell)), []);
 
     const createFood = () => {
+        console.log("create");
         let newFood = getRandomFoodCoordinates();
         while (true) {
             if (snake.reduce((acc, cell) => acc || (cell.x !== newFood.x || cell.y !== newFood.y), false)) {
@@ -106,20 +107,23 @@ export const GameBoard = memo(function GameBoardInternal() {
     }
 
     const clearBoard = useCallback(() => {
-        removeFoodClass(food!);
+        console.log(food);
+        if (food != null) removeFoodClass(food);
         snake.forEach((cell) => {
             removeSnakeClass(cell);
         })
     }, [food, snake]);
 
     const handlePlayAgain = useCallback(() => {
-        console.log('yeer');
-        setGameOver(false);
         clearBoard();
         setSnake(SNAKE_START_POSITION);
         initializeSnake();
         createFood();
-    }, [clearBoard]);
+        if (snakeDirection !== Direction.DOWN) {
+            setSnakeDirection(Direction.DOWN);
+        }
+        setGameOver(false);
+    }, [clearBoard, snakeDirection]);
 
     useEffect(() => {
         const intervalKey = setInterval(handleMoveSnake, speed);
@@ -132,7 +136,6 @@ export const GameBoard = memo(function GameBoardInternal() {
 
     useEffect(() => {
         initializeSnake();
-        createFood();
     }, []);
 
     return (
