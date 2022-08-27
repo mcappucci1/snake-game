@@ -1,4 +1,6 @@
-## To Run Snake Game
+## Can be accessed at: https://mcappucci-snake-game.herokuapp.com/ 
+
+## To Run Snake Game Locally
 
   1. Copy the git repo by running `git clone git@github.com:mcappucci1/snake-game.git`
   2. Enter the root folder (named `snake-game`) of the repo
