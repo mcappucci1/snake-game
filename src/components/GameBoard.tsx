@@ -17,7 +17,14 @@ import { GameCells } from "./GameCells";
 import { GameBanner } from "./GameBanner";
 import "../css/GameBoard.css";
 
-export const GameBoard = memo(function GameBoardInternal() {
+interface Props {
+    currentScore: number;
+    setCurrentScore: (score: number) => void;
+    bestScore: number;
+    setBestScore: (score: number) => void;
+}
+
+export const GameBoard = memo(function GameBoardInternal({ currentScore, setCurrentScore, bestScore, setBestScore }: Props) {
     const [snake, setSnake] = useState<SnakeCell[]>(SNAKE_START_POSITION);
     const [snakeDirection, setSnakeDirection] = useState<Direction>(Direction.DOWN);
     const [food, setFood] = useState<SnakeCell>();
@@ -51,6 +58,8 @@ export const GameBoard = memo(function GameBoardInternal() {
         let [_x, _y] = getNextHead();
         movedSnake = [{ x: snake[0].x + _x, y: snake[0].y + _y }, ...snake.slice(0,-1)];
         if (didSnakeEat(movedSnake)) {
+            if (currentScore + 1 > bestScore) setBestScore(currentScore + 1);
+            setCurrentScore(currentScore + 1);
             removeFoodClass(food!);
             movedSnake.push(snake[snake.length-1]);
             createFood();
@@ -101,6 +110,7 @@ export const GameBoard = memo(function GameBoardInternal() {
         clearBoard();
         setSnake(SNAKE_START_POSITION);
         initializeSnake();
+        setCurrentScore(0);
         setSnakeDirection(Direction.DOWN);
     }, [clearBoard, snakeDirection, snake, food]);
 
