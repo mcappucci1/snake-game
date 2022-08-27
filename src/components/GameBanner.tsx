@@ -35,7 +35,7 @@ export const GameBanner = memo(function GameBannerInternal({
                 <Fragment>
                     <button className="d-block mb-3 mx-auto snake-btn" onClick={handleStartCountdown}>Play</button>
                     <select
-                        className="snake-select"
+                        className="snake-select pb-1"
                         onChange={(e) => handleChangeSpeed(e.target.value as unknown as Speed)}
                         value={speed}
                     >
