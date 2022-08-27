@@ -33,18 +33,21 @@ export const GameBoard = memo(function GameBoardInternal() {
             snake.slice(1).reduce((acc, cell) => acc || (cell.x === head.x && cell.y === head.y), false);
         if (over) setGameOver(true);
         return over;
-        
     }
 
     const didSnakeEat = (movedSnake: SnakeCell[]) => movedSnake[0].x === food!.x && movedSnake[0].y === food!.y;
 
-    const handleMoveSnake = () => {
-        if (gameOver || isGameOver()) return;
-        let movedSnake: SnakeCell[];
-        let [_x, _y] = [
+    const getNextHead = useCallback(() => {
+        return [
             snakeDirection === Direction.UP ? -1 : snakeDirection === Direction.DOWN ? 1 : 0,
             snakeDirection === Direction.LEFT ? -1 : snakeDirection === Direction.RIGHT ? 1 : 0
         ];
+    }, [snakeDirection]);
+
+    const handleMoveSnake = () => {
+        if (gameOver || isGameOver()) return;
+        let movedSnake: SnakeCell[];
+        let [_x, _y] = getNextHead();
         movedSnake = [{ x: snake[0].x + _x, y: snake[0].y + _y }, ...snake.slice(0,-1)];
         if (didSnakeEat(movedSnake)) {
             removeFoodClass(food!);
@@ -73,8 +76,11 @@ export const GameBoard = memo(function GameBoardInternal() {
 
     const createFood = () => {
         let newFood = getRandomFoodCoordinates();
+        const nextHead = getNextHead();
         while (true) {
-            if (snake.reduce((acc, cell) => acc || (cell.x !== newFood.x || cell.y !== newFood.y), false)) break;
+            const foodNotInSnake = snake.reduce((acc, cell) => acc || (cell.x !== newFood.x || cell.y !== newFood.y), false);
+            const foodNotNextHead = snake[0].x + nextHead[0] !== newFood.x || snake[0].y + nextHead[1] !== newFood.y;
+            if (foodNotInSnake && foodNotNextHead) break;
             newFood = getRandomFoodCoordinates();
         }
         setFood(newFood);
