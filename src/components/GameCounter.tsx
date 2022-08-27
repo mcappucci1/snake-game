@@ -22,6 +22,8 @@ export const GameCounter = memo(function GameCounterInternal({ endCountdown }: P
     }, []);
 
     return (
-        <h1>{counter}</h1>
+        <div className='d-flex w-100 h-100 align-items-center justify-content-center'>
+            <h1>{counter}</h1>
+        </div>
     );
 });
