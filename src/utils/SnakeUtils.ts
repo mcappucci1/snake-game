@@ -5,8 +5,8 @@ export const enum Direction {
     RIGHT
 }
 export const enum Speed {
-    SLOW = 200,
-    MEDIUM = 100,
+    SLOW = 100,
+    MEDIUM = 75,
     FAST = 50
 }
 export const enum ArrowKeys {
