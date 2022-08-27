@@ -4,6 +4,7 @@ import {
     addSnakeClass,
     ArrowKeys,
     Direction,
+    getIdFromCoordinate,
     getRandomFoodCoordinates,
     NUM_CELLS,
     removeSnakeClass,
@@ -77,10 +78,14 @@ export const GameBoard = memo(function GameBoardInternal() {
     const createFood = () => {
         let newFood = getRandomFoodCoordinates();
         const nextHead = getNextHead();
+        const seen = new Set();
         while (true) {
-            const foodNotInSnake = snake.reduce((acc, cell) => acc || (cell.x !== newFood.x || cell.y !== newFood.y), false);
-            const foodNotNextHead = snake[0].x + nextHead[0] !== newFood.x || snake[0].y + nextHead[1] !== newFood.y;
-            if (foodNotInSnake && foodNotNextHead) break;
+            if (!seen.has(getIdFromCoordinate(newFood))) {
+                const foodNotInSnake = snake.reduce((acc, cell) => acc && (cell.x !== newFood.x || cell.y !== newFood.y), true);
+                const foodNotNextHead = snake[0].x + nextHead[0] !== newFood.x || snake[0].y + nextHead[1] !== newFood.y;
+                if (foodNotInSnake && foodNotNextHead) break;
+            }
+            seen.add(getIdFromCoordinate(newFood));
             newFood = getRandomFoodCoordinates();
         }
         setFood(newFood);
