@@ -36,7 +36,7 @@ export const GameBoard = memo(function GameBoardInternal() {
         
     }
 
-    const didSnakeEat = () => snake[0].x === food!.x && snake[0].y === food!.y;
+    const didSnakeEat = (movedSnake: SnakeCell[]) => movedSnake[0].x === food!.x && movedSnake[0].y === food!.y;
 
     const handleMoveSnake = () => {
         if (gameOver || isGameOver()) return;
@@ -46,7 +46,7 @@ export const GameBoard = memo(function GameBoardInternal() {
             snakeDirection === Direction.LEFT ? -1 : snakeDirection === Direction.RIGHT ? 1 : 0
         ];
         movedSnake = [{ x: snake[0].x + _x, y: snake[0].y + _y }, ...snake.slice(0,-1)];
-        if (didSnakeEat()) {
+        if (didSnakeEat(movedSnake)) {
             removeFoodClass(food!);
             movedSnake.push(snake[snake.length-1]);
             createFood();
