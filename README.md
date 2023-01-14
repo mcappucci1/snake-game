@@ -1,4 +1,4 @@
-## Can be accessed at: https://mcappucci-snake-game.herokuapp.com/ 
+## Can be accessed at: https://master.d121rtq86azvt.amplifyapp.com/
 
 ## To Run Snake Game Locally
 
