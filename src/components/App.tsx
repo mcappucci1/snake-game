@@ -4,7 +4,11 @@ import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import "../css/App.css";
 
-export const App = function AppInternal() {
+
+
+
+export const App = () => {
+
     const [currentScore, setCurrentScore] = useState<number>(0);
     const [bestScore, setBestScore] = useState<number>(0);
 

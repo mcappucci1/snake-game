@@ -1,7 +1,7 @@
 import "../css/GameBanner.css";
 import { GameCounter } from "./GameCounter";
-import { Speed } from "../utils/SnakeUtils";
-import { Fragment, memo, useCallback, useState } from "react";
+import { Speed } from "../utils/SnakeGameUtils";
+import { useCallback, useState } from "react";
 
 interface Props {
     handleSetBoard: () => void;
@@ -10,29 +10,25 @@ interface Props {
     speed: Speed;
 }
 
-export const GameBanner = memo(function GameBannerInternal({
-    handleSetBoard,
-    handleStartGame,
-    handleChangeSpeed,
-    speed
-}: Props) {
+export const GameBanner = ({ handleSetBoard, handleStartGame, handleChangeSpeed, speed }: Props) => {
+
     const [countdown, setCountdown] = useState(false);
 
     const handleEndCountdown = useCallback(() => {
         setCountdown(false);
         handleStartGame();
-    }, []);
+    }, [handleStartGame]);
 
     const handleStartCountdown = useCallback(() => {
         setCountdown(true);
         handleSetBoard();
-    }, []);
+    }, [handleSetBoard]);
 
     return (
         <div id="end-game-banner-container">
             {
                 countdown ? <GameCounter endCountdown={handleEndCountdown} /> :
-                <Fragment>
+                <>
                     <button className="d-block mb-3 mx-auto snake-btn" onClick={handleStartCountdown}>Play</button>
                     <select
                         className="snake-select pb-1"
@@ -43,8 +39,8 @@ export const GameBanner = memo(function GameBannerInternal({
                         <option value={Speed.MEDIUM}>Medium</option>
                         <option value={Speed.FAST}>Fast</option>
                     </select>
-                </Fragment>
+                </>
             }
         </div>
     );
-});
+};

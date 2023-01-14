@@ -1,12 +1,12 @@
-import { Fragment, memo, useMemo } from "react";
-import { getIdFromCoordinate, NUM_CELLS } from "../utils/SnakeUtils";
+import { useMemo } from "react";
+import { getIdFromCoordinate, NUM_GAME_CELLS } from "../utils/SnakeGameUtils";
 
-export const GameCells = memo(function GameCellsInternal() {
+export const GameCells = ()  => {
     const board: JSX.Element[] = useMemo(() => {
         const boardCells: JSX.Element[][] = [];
-        for (let i = 0; i < NUM_CELLS; ++i) {
+        for (let i = 0; i < NUM_GAME_CELLS; ++i) {
             boardCells.push([]);
-            for (let j = 0; j < NUM_CELLS; ++j) {
+            for (let j = 0; j < NUM_GAME_CELLS; ++j) {
                 const uniqueId = getIdFromCoordinate({ x: i, y: j});
                 boardCells[i].push(<div key={uniqueId} id={uniqueId} className="cell" />);
             }
@@ -15,8 +15,8 @@ export const GameCells = memo(function GameCellsInternal() {
     }, []);
 
     return (
-        <Fragment>
+        <>
             {board}
-        </Fragment>
+        </>
     );
-});
+};
