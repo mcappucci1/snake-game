@@ -11,13 +11,6 @@ export const enum Speed {
     FAST = 50
 }
 
-export const enum ArrowKeys {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-}
-
 export type Cell = {
     x: number,
     y: number
@@ -32,6 +25,15 @@ export const SNAKE_START_POSITION: Cell[] = [
 ];
 
 export const NUM_GAME_CELLS = 21;
+
+export const DEFAULT_COUNTER = 3;
+
+export const oppositeDirection = (dir: Direction) => {
+    if (dir === Direction.UP) return Direction.DOWN;
+    else if (dir === Direction.DOWN) return Direction.UP;
+    else if (dir === Direction.RIGHT) return Direction.LEFT;
+    else return Direction.RIGHT;
+}
 
 export const getIdFromCoordinate = (coor: Cell) => {
     return `${coor.x}-${coor.y}`;

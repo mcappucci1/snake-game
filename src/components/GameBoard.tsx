@@ -20,20 +20,24 @@ export const GameBoard = ({ currentScore, setCurrentScore, bestScore, setBestSco
     const [gameOver, setGameOver] = useState<boolean>(true);
     const [speed, setSpeed] = useState<Speed>(Speed.SLOW);
 
+
     const handleChangeSpeed = useCallback((newSpeed: Speed) => {
         if (newSpeed !== speed) {
             setSpeed(newSpeed);
         }
     }, [speed]);
 
+
     const handleSetBoard = useCallback(() => {
         snake.resetGame();
         setCurrentScore(0);
     }, [setCurrentScore, snake]);
 
+
     const handleStartGame = useCallback(() => {
         setGameOver(false);
     }, [setGameOver]);
+
 
     const handleDirectionChange = useCallback((event: KeyboardEvent) => {
         if (event.key === 'ArrowUp') {
@@ -46,6 +50,7 @@ export const GameBoard = ({ currentScore, setCurrentScore, bestScore, setBestSco
             snake.changeDirection(Direction.RIGHT);
         }
     }, [snake]);
+
 
     const handleMoveSnake = useCallback(() => {
         if (!gameOver) {
@@ -63,6 +68,7 @@ export const GameBoard = ({ currentScore, setCurrentScore, bestScore, setBestSco
         }
     }, [snake, gameOver, currentScore, setCurrentScore, bestScore, setBestScore]);
 
+
     useEffect(() => {
         const intervalKey = setInterval(handleMoveSnake, speed);
         document.addEventListener('keydown', handleDirectionChange);
@@ -72,10 +78,12 @@ export const GameBoard = ({ currentScore, setCurrentScore, bestScore, setBestSco
         }
     }, [speed, handleMoveSnake, handleDirectionChange]);
 
+
     useEffect(() => {
         snake.resetSnake();
     }, [snake])
 
+    
     return (
         <div id="game-board-container">
             { gameOver && <GameBanner 

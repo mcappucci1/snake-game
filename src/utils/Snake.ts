@@ -6,7 +6,8 @@ import {
     removeSnakeClass,
     addSnakeClass,
     addFoodClass,
-    removeFoodClass
+    removeFoodClass,
+    oppositeDirection
 } from './SnakeGameUtils';
 
 
@@ -87,7 +88,7 @@ export class Snake {
     move() {
         const newHeadOfSnake = this.getNextHead();
         this.snake.unshift(newHeadOfSnake);
-        const snakeAteFood = this.snake[0].x === this.food.x && this.snake[0].y === this.food.y
+        const snakeAteFood = this.snake[0].x === this.food.x && this.snake[0].y === this.food.y;
         if (snakeAteFood) {
             removeFoodClass(this.food);
             this.setNewFood();
@@ -109,14 +110,8 @@ export class Snake {
     }
 
     changeDirection(direction: Direction) {
-        if (direction === Direction.UP && this.isValidDirectionChange(Direction.UP, Direction.DOWN)) {
-            this.direction = Direction.UP;
-        } else if (direction === Direction.DOWN && this.isValidDirectionChange(Direction.DOWN, Direction.UP)) {
-            this.direction = Direction.DOWN;
-        } else if (direction === Direction.RIGHT && this.isValidDirectionChange(Direction.RIGHT, Direction.LEFT)) {
-            this.direction = Direction.RIGHT;
-        } else if (direction === Direction.LEFT && this.isValidDirectionChange(Direction.LEFT, Direction.RIGHT)) {
-            this.direction = Direction.LEFT;
+        if (this.isValidDirectionChange(direction, oppositeDirection(direction))) {
+            this.direction = direction;
         }
     }
 

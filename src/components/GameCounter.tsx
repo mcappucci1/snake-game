@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-
-const DEFAULT_COUNTER = 3;
+import { DEFAULT_COUNTER } from "../utils/SnakeGameUtils";
 
 interface Props {
     endCountdown: () => void;
 }
 
 export const GameCounter = ({ endCountdown }: Props) => {
+
     const [counter, setCounter] = useState(DEFAULT_COUNTER);
 
     useEffect(() => {
